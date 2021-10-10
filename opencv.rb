@@ -10,16 +10,19 @@ class Opencv < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "ninja" => :build
+  
   depends_on "goose-bomb/gaodian/ffmpeg"
   depends_on "goose-bomb/gaodian/harfbuzz"
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "protobuf"
+  depends_on "onnxruntime"
   depends_on "python"
   depends_on "tbb"
-
+  
   uses_from_macos "zlib"
 
   resource "contrib" do
@@ -43,6 +46,7 @@ class Opencv < Formula
       -D WITH_LAPACK=ON
       -D WITH_OPENCL=ON
       -D WITH_ONNX=ON
+      -D ONNXRT_ROOT_DIR=#{Formula["onnxruntime"].opt_prefix}
       -D BUILD_ZLIB=OFF
       -D BUILD_IPP_IW=OFF
       -D BUILD_JASPER=OFF
@@ -69,6 +73,9 @@ class Opencv < Formula
       -D WITH_IMGCODEC_SUNRASTER=OFF
       -D WITH_VTK=OFF
       -D BUILD_LIST=core,python3,imgproc,imgcodes,videoio,highgui,gapi,ml,flann,dnn,features2d,objdetect,photo,optflow,video,calib3d,stitching,saliency,aruco,bgsegm,ximgproc,xphoto,shape,quality,line_descriptor,intensity_transform,phase_unwrapping
+      -D BUILD_opencv_apps=OFF
+      -D BUILD_opencv_python2=OFF
+      -D BUILD_opencv_python3=ON
       -D PYTHON3_EXECUTABLE=#{Formula["python"].opt_bin}/python3
       -D BUILD_TESTS=OFF
       -D BUILD_PERF_TESTS=OFF
