@@ -16,7 +16,7 @@ class Ffmpeg < Formula
   depends_on "freetype"
   depends_on "goose-bomb/gaodian/libass"
   depends_on "opus"
-  depends_on "libfdk_aac"
+  depends_on "fdk-aac"
   depends_on "x264"
   depends_on "x265"
   depends_on "xz"
