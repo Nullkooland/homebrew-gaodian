@@ -45,6 +45,7 @@ class Opencv < Formula
       -D WITH_IPP=OFF
       -D WITH_LAPACK=ON
       -D WITH_OPENCL=ON
+      -D OPENCV_DNN_OPENCL=ON
       -D WITH_ONNX=ON
       -D ONNXRT_ROOT_DIR=#{Formula["onnxruntime"].opt_prefix}
       -D BUILD_ZLIB=OFF
