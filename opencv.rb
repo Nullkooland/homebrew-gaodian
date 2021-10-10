@@ -68,6 +68,7 @@ class Opencv < Formula
       -D WITH_TIFF=OFF
       -D WITH_WEBP=OFF
       -D WITH_JASPER=OFF
+      -D WITH_OPENJPEG=OFF
       -D WITH_OPENEXR=OFF
       -D WITH_OPENGL=OFF
       -D WITH_IMGCODEC_SUNRASTER=OFF
