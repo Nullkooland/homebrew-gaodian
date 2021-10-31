@@ -6,7 +6,9 @@ class Libavif < Formula
   license "BSD-2-Clause"
 
   depends_on "cmake" => :build
+  depends_on "ninja" => :build
   depends_on "nasm" => :build
+  
   depends_on "goose-bomb/gaodian/svt-av1"
   depends_on "dav1d"
   depends_on "jpeg"
