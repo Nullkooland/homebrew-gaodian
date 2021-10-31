@@ -1,4 +1,4 @@
-class SVTAV1 < Formula
+class SvtAv1 < Formula
   desc "The Scalable Video Technology for AV1 (SVT-AV1 Encoder and Decoder)"
   homepage "https://gitlab.com/AOMediaCodec/SVT-AV1"
   url "https://gitlab.com/AOMediaCodec/SVT-AV1/-/archive/v0.8.7/SVT-AV1-v0.8.7.tar.gz"
