@@ -19,7 +19,6 @@ class Libavif < Formula
   def install
     args = %W[
       -G Ninja
-      -D CMAKE_INSTALL_RPATH=#{rpath}
       -D AVIF_CODEC_SVT=ON
       -D AVIF_CODEC_DAV1D=ON
       -D AVIF_BUILD_APPS=ON
