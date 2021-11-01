@@ -16,6 +16,7 @@ class SvtAv1 < Formula
       -D CMAKE_BUILD_TYPE=Release
       -D BUILD_SHARED_LIBS=ON
       -D ENABLE_NASM=ON
+      -D BUILD_DEC=OFF
       -D BUILD_TESTING=OFF
       -D BUILD_APPS=OFF
     ]
