@@ -11,13 +11,13 @@ class Ffmpeg < Formula
   depends_on "pkg-config" => :build
   depends_on "texinfo" => :build
 
-  depends_on "aom"
+
   depends_on "dav1d"
+  depends_on "goose-bomb/gaodian/svt-av1"
   depends_on "freetype"
   depends_on "goose-bomb/gaodian/libass"
   depends_on "opus"
   depends_on "fdk-aac"
-  depends_on "x264"
   depends_on "x265"
   depends_on "xz"
 
@@ -31,11 +31,10 @@ class Ffmpeg < Formula
       --cc=#{ENV.cc}
       --host-cflags=#{ENV.cflags}
       --host-ldflags=#{ENV.ldflags}
-      --enable-libaom
+      --enable-libsvtav1
       --enable-libdav1d
       --enable-libopus
       --enable-gpl
-      --enable-libx264
       --enable-libx265
       --enable-libfreetype
       --enable-libass
