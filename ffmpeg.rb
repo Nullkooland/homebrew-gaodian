@@ -1,15 +1,18 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n4.4.tar.gz"
-  version "4.4-with-options" # to distinguish from homebrew-core's ffmpeg
-  sha256 "bea6d9f91cdbe4c5ad98e0878955ad5077df3883ef321fd4668ee1076de793fe"
+  url "https://ffmpeg.org/releases/ffmpeg-4.4.1.tar.xz"
+  sha256 "eadbad9e9ab30b25f5520fbfde99fae4a92a1ae3c0257a8d68569a4651e30e02"
   license "GPL-2.0-or-later"
   head "https://github.com/FFmpeg/FFmpeg.git"
+  
+  livecheck do
+    url "https://ffmpeg.org/download.html"
+    regex(/href=.*?ffmpeg[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
-  depends_on "texinfo" => :build
 
 
   depends_on "dav1d"
