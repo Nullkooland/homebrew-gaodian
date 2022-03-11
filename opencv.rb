@@ -19,7 +19,6 @@ class Opencv < Formula
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "protobuf"
-  depends_on "onnxruntime"
   depends_on "python"
   depends_on "tbb"
   
@@ -46,8 +45,6 @@ class Opencv < Formula
       -D WITH_LAPACK=ON
       -D WITH_OPENCL=ON
       -D OPENCV_DNN_OPENCL=ON
-      -D WITH_ONNX=ON
-      -D ONNXRT_ROOT_DIR=#{Formula["onnxruntime"].opt_prefix}
       -D BUILD_ZLIB=OFF
       -D BUILD_IPP_IW=OFF
       -D BUILD_JASPER=OFF
