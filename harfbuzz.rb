@@ -21,13 +21,12 @@ class Harfbuzz < Formula
       -D CMAKE_BUILD_TYPE=Release
       -D BUILD_SHARED_LIBS=ON
       -D HB_HAVE_FREETYPE=ON
+      -D HB_BUILD_SUBSET=OFF
     ]
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args, *args
-      system "ninja"
-      system "ninja", "install"
-    end
+    system "cmake", "-B", "build", *std_cmake_args, *args
+    system "cmake", "--build", "build"
+    system "cmake", "--build", "build", "--target", "install"
   end
 
   test do
