@@ -1,8 +1,8 @@
 class SvtAv1 < Formula
   desc "The Scalable Video Technology for AV1 (SVT-AV1 Encoder and Decoder)"
   homepage "https://gitlab.com/AOMediaCodec/SVT-AV1"
-  url "https://gitlab.com/AOMediaCodec/SVT-AV1/-/archive/v1.0.0/SVT-AV1-v1.0.0.tar.gz"
-  sha256 "84030ef7f33645ddfcdd2dc8a08277e49f3c4297fc53711958060c8ce51dc22d"
+  url "https://gitlab.com/AOMediaCodec/SVT-AV1/-/archive/v1.1.0/SVT-AV1-v1.1.0.tar.gz"
+  sha256 "1c211b944ac83ef013fe91aee96c01289da4e3762c1e2f265449f3a964f8e4bc"
   license "BSD-3-clause-clear"
   head "https://gitlab.com/AOMediaCodec/SVT-AV1.git"
 
@@ -21,8 +21,8 @@ class SvtAv1 < Formula
       -D BUILD_APPS=OFF
     ]
 
-    system "cmake", "-B", "Build", *std_cmake_args, *args
-    system "cmake", "--build", "Build"
-    system "cmake", "--build", "Build", "--target", "install"
+    system "cmake", "-B", "build", *std_cmake_args, *args
+    system "cmake", "--build", "build"
+    system "cmake", "--build", "build", "--target", "install"
   end
 end
