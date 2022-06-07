@@ -1,8 +1,8 @@
 class Opencv < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/4.5.4.tar.gz"
-  sha256 "c20bb83dd790fc69df9f105477e24267706715a9d3c705ca1e7f613c7b3bad3d"
+  url "https://github.com/opencv/opencv/archive/4.6.0.tar.gz"
+  sha256 "1ec1cba65f9f20fe5a41fda1586e01c70ea0c9a6d7b67c9e13edf0cfe2239277"
   license "Apache-2.0"
 
   livecheck do
@@ -25,16 +25,13 @@ class Opencv < Formula
   uses_from_macos "zlib"
 
   resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/4.5.4.tar.gz"
-    sha256 "ad74b440b4539619dc9b587995a16b691246023d45e34097c73e259f72de9f81"
+    url "https://github.com/opencv/opencv_contrib/archive/4.6.0.tar.gz"
+    sha256 "1777d5fd2b59029cf537e5fd6f8aa68d707075822f90bde683fcde086f85f7a7"
   end
 
   def install
-    ENV.cxx11
-
     resource("contrib").stage buildpath/"opencv_contrib"
-    
-    args = std_cmake_args + %W[
+    args = %w[
       -G Ninja
       -D CMAKE_BUILD_TYPE=Release
       -D BUILD_SHARED_LIBS=ON
@@ -83,11 +80,9 @@ class Opencv < Formula
       -D INSTALL_PYTHON_EXAMPLES=OFF
     ]
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args, *args
-      system "ninja"
-      system "ninja", "install"
-    end
+    system "cmake", "-B", "build", *std_cmake_args, *args
+    system "cmake", "--build", "build"
+    system "cmake", "--build", "build", "--target", "install"
   end
 
   test do
