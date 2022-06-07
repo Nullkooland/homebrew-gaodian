@@ -50,6 +50,7 @@ class Opencv < Formula
       -D BUILD_OPENEXR=OFF
       -D BUILD_PNG=OFF
       -D BUILD_PROTOBUF=OFF
+      -D PROTOBUF_UPDATE_FILES=ON
       -D BUILD_TIFF=OFF
       -D BUILD_WEBP=OFF
       -D BUILD_JAVA=OFF
@@ -78,6 +79,7 @@ class Opencv < Formula
       -D BUILD_EXAMPLES=OFF
       -D INSTALL_C_EXAMPLES=OFF
       -D INSTALL_PYTHON_EXAMPLES=OFF
+      -D OPENCV_GENERATE_PKGCONFIG=ON
     ]
 
     system "cmake", "-B", "build", *std_cmake_args, *args
