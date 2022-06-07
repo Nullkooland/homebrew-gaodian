@@ -31,7 +31,7 @@ class Opencv < Formula
 
   def install
     resource("contrib").stage buildpath/"opencv_contrib"
-    args = %w[
+    args = %W[
       -G Ninja
       -D CMAKE_BUILD_TYPE=Release
       -D BUILD_SHARED_LIBS=ON
