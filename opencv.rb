@@ -19,7 +19,7 @@ class Opencv < Formula
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "protobuf"
-  depends_on "python"
+  depends_on "python@3.9"
   depends_on "tbb"
   
   uses_from_macos "zlib"
@@ -72,7 +72,7 @@ class Opencv < Formula
       -D BUILD_opencv_apps=OFF
       -D BUILD_opencv_python2=OFF
       -D BUILD_opencv_python3=ON
-      -D PYTHON3_EXECUTABLE=#{Formula["python"].opt_bin}/python3
+      -D PYTHON3_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
       -D BUILD_TESTS=OFF
       -D BUILD_PERF_TESTS=OFF
       -D BUILD_EXAMPLES=OFF
@@ -83,6 +83,9 @@ class Opencv < Formula
     system "cmake", "-B", "build", *std_cmake_args, *args
     system "cmake", "--build", "build"
     system "cmake", "--build", "build", "--target", "install"
+
+    # Prevent dependents from using fragile Cellar paths.
+    inreplace lib/"pkgconfig/opencv#{version.major}.pc", prefix, opt_prefix
   end
 
   test do
@@ -98,7 +101,7 @@ class Opencv < Formula
                     "-o", "test"
     assert_equal `./test`.strip, version.to_s
 
-    output = shell_output(Formula["python"].opt_bin/"python3 -c 'import cv2; print(cv2.__version__)'")
+    output = shell_output(Formula["python@3.9"].opt_bin/"python3 -c 'import cv2; print(cv2.__version__)'")
     assert_equal version.to_s, output.chomp
   end
 end
