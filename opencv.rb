@@ -74,6 +74,7 @@ class Opencv < Formula
       -D WITH_OPENGL=OFF
       -D WITH_IMGCODEC_SUNRASTER=OFF
       -D WITH_VTK=OFF
+      -D JPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib}/libjpeg.dylib
       -D BUILD_LIST=core,python3,imgproc,imgcodes,videoio,highgui,gapi,ml,flann,dnn,features2d,objdetect,photo,optflow,video,calib3d,stitching,saliency,aruco,bgsegm,ximgproc,xphoto,shape,quality,line_descriptor,intensity_transform,phase_unwrapping
       -D BUILD_opencv_apps=OFF
       -D BUILD_opencv_python2=OFF
