@@ -11,7 +11,7 @@ class Libavif < Formula
   
   depends_on "goose-bomb/gaodian/svt-av1"
   depends_on "dav1d"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
 
   uses_from_macos "zlib"
@@ -24,6 +24,8 @@ class Libavif < Formula
       -D AVIF_BUILD_APPS=ON
       -D AVIF_BUILD_EXAMPLES=OFF
       -D AVIF_BUILD_TESTS=OFF
+      -D JPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib}/libjpeg.dylib
+      -D JPEG_INCLUDE_DIR=#{Formula["jpeg-turbo"].opt_include}
     ]
 
     mkdir "build" do
