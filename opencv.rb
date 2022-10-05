@@ -16,10 +16,11 @@ class Opencv < Formula
   
   depends_on "goose-bomb/gaodian/ffmpeg"
   depends_on "goose-bomb/gaodian/harfbuzz"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
+  depends_on "libtiff"
   depends_on "protobuf"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "tbb"
   
   uses_from_macos "zlib"
@@ -31,6 +32,11 @@ class Opencv < Formula
 
   def install
     resource("contrib").stage buildpath/"opencv_contrib"
+
+    # Remove bundled libraries to make sure formula dependencies are used
+    libdirs = %w[ffmpeg libjasper libjpeg libjpeg-turbo libpng libtiff libwebp openexr openjpeg protobuf tbb zlib]
+    libdirs.each { |l| (buildpath/"3rdparty"/l).rmtree }
+
     args = %W[
       -G Ninja
       -D CMAKE_BUILD_TYPE=Release
@@ -61,7 +67,6 @@ class Opencv < Formula
       -D WITH_FFMPEG=ON
       -D WITH_GPHOTO2=OFF
       -D WITH_GSTREAMER=OFF
-      -D WITH_TIFF=OFF
       -D WITH_WEBP=OFF
       -D WITH_JASPER=OFF
       -D WITH_OPENJPEG=OFF
@@ -73,7 +78,7 @@ class Opencv < Formula
       -D BUILD_opencv_apps=OFF
       -D BUILD_opencv_python2=OFF
       -D BUILD_opencv_python3=ON
-      -D PYTHON3_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
+      -D PYTHON3_EXECUTABLE=#{Formula["python@3.10"].opt_bin}/python3
       -D BUILD_TESTS=OFF
       -D BUILD_PERF_TESTS=OFF
       -D BUILD_EXAMPLES=OFF
@@ -99,11 +104,11 @@ class Opencv < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}/opencv4",
+    system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}/opencv4",
                     "-o", "test"
     assert_equal `./test`.strip, version.to_s
 
-    output = shell_output(Formula["python@3.9"].opt_bin/"python3 -c 'import cv2; print(cv2.__version__)'")
+    output = shell_output(Formula["python@3.10"].opt_bin/"python3 -c 'import cv2; print(cv2.__version__)'")
     assert_equal version.to_s, output.chomp
   end
 end
