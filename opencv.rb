@@ -1,8 +1,8 @@
 class Opencv < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/4.6.0.tar.gz"
-  sha256 "1ec1cba65f9f20fe5a41fda1586e01c70ea0c9a6d7b67c9e13edf0cfe2239277"
+  url "https://github.com/opencv/opencv/archive/4.7.0.tar.gz"
+  sha256 "8df0079cdbe179748a18d44731af62a245a45ebf5085223dc03133954c662973"
   license "Apache-2.0"
 
   livecheck do
@@ -16,32 +16,23 @@ class Opencv < Formula
   
   depends_on "goose-bomb/gaodian/ffmpeg"
   depends_on "goose-bomb/gaodian/harfbuzz"
-  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
-  depends_on "protobuf"
+  depends_on "protobuf@3"
   depends_on "python@3.10"
   depends_on "tbb"
   
   uses_from_macos "zlib"
 
-  resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/4.6.0.tar.gz"
-    sha256 "1777d5fd2b59029cf537e5fd6f8aa68d707075822f90bde683fcde086f85f7a7"
-  end
-
   def install
-    resource("contrib").stage buildpath/"opencv_contrib"
-
     # Remove bundled libraries to make sure formula dependencies are used
-    libdirs = %w[ffmpeg libjasper libjpeg libjpeg-turbo libpng libtiff libwebp openexr openjpeg protobuf tbb zlib]
+    libdirs = %w[ffmpeg libjasper libjpeg libpng libtiff libwebp openexr openjpeg protobuf tbb zlib]
     libdirs.each { |l| (buildpath/"3rdparty"/l).rmtree }
 
     args = %W[
       -G Ninja
       -D CMAKE_BUILD_TYPE=Release
       -D BUILD_SHARED_LIBS=ON
-      -D OPENCV_EXTRA_MODULES_PATH=#{buildpath}/opencv_contrib/modules
       -D CPU_BASELINE=AVX2
       -D WITH_TBB=ON
       -D WITH_IPP=OFF
@@ -52,7 +43,7 @@ class Opencv < Formula
       -D BUILD_IPP_IW=OFF
       -D BUILD_JASPER=OFF
       -D BUILD_OPENJPEG=OFF
-      -D BUILD_JPEG=OFF
+      -D BUILD_JPEG=ON
       -D BUILD_OPENEXR=OFF
       -D BUILD_PNG=OFF
       -D BUILD_PROTOBUF=OFF
@@ -74,8 +65,7 @@ class Opencv < Formula
       -D WITH_OPENGL=OFF
       -D WITH_IMGCODEC_SUNRASTER=OFF
       -D WITH_VTK=OFF
-      -D JPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib}/libjpeg.dylib
-      -D BUILD_LIST=core,python3,imgproc,imgcodes,videoio,highgui,gapi,ml,flann,dnn,features2d,objdetect,photo,optflow,video,calib3d,stitching,saliency,aruco,bgsegm,ximgproc,xphoto,shape,quality,line_descriptor,intensity_transform,phase_unwrapping
+      -D BUILD_LIST=core,gapi,imgproc,imgcodes,videoio,video,ml,flann,dnn,features2d,objdetect,photo,optflow,calib3d,stitching,highgui,python3
       -D BUILD_opencv_apps=OFF
       -D BUILD_opencv_python2=OFF
       -D BUILD_opencv_python3=ON
