@@ -19,7 +19,6 @@ class Opencv < Formula
   depends_on "libtiff"
   depends_on "protobuf@3"
   depends_on "python@3.10"
-  depends_on "tbb"
   depends_on "freetype"
   
   uses_from_macos "zlib"
