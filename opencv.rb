@@ -20,7 +20,7 @@ class Opencv < Formula
   depends_on "libtiff"
   depends_on "protobuf@3"
   depends_on "python@3.10"
-  depends_on "tbb@2021.7"
+  depends_on "tbb"
   
   uses_from_macos "zlib"
 
