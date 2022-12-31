@@ -39,6 +39,7 @@ class Opencv < Formula
       -D WITH_LAPACK=ON
       -D WITH_OPENCL=ON
       -D OPENCV_DNN_OPENCL=ON
+      -D WITH_FREETYPE=ON
       -D BUILD_ZLIB=OFF
       -D BUILD_IPP_IW=OFF
       -D BUILD_JASPER=OFF
