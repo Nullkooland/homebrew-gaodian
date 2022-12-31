@@ -15,20 +15,16 @@ class Opencv < Formula
   depends_on "ninja" => :build
   
   depends_on "goose-bomb/gaodian/ffmpeg"
-  depends_on "goose-bomb/gaodian/harfbuzz"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "protobuf@3"
   depends_on "python@3.10"
   depends_on "tbb"
+  depends_on "freetype"
   
   uses_from_macos "zlib"
 
   def install
-    # Remove bundled libraries to make sure formula dependencies are used
-    libdirs = %w[ffmpeg libjasper libjpeg libpng libtiff libwebp openexr openjpeg protobuf tbb zlib]
-    libdirs.each { |l| (buildpath/"3rdparty"/l).rmtree }
-
     args = %W[
       -G Ninja
       -D CMAKE_BUILD_TYPE=Release
@@ -79,7 +75,7 @@ class Opencv < Formula
 
     system "cmake", "-B", "build", *std_cmake_args, *args
     system "cmake", "--build", "build"
-    system "cmake", "--install", "build"
+    system "cmake", "--build", "build", "--target", "install"
 
     # Prevent dependents from using fragile Cellar paths.
     inreplace lib/"pkgconfig/opencv#{version.major}.pc", prefix, opt_prefix
