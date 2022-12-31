@@ -48,7 +48,6 @@ class Opencv < Formula
       -D BUILD_OPENEXR=OFF
       -D BUILD_PNG=OFF
       -D BUILD_PROTOBUF=OFF
-      -D PROTOBUF_UPDATE_FILES=ON
       -D BUILD_TIFF=OFF
       -D BUILD_WEBP=OFF
       -D BUILD_JAVA=OFF
@@ -70,7 +69,6 @@ class Opencv < Formula
       -D BUILD_opencv_apps=OFF
       -D BUILD_opencv_python2=OFF
       -D BUILD_opencv_python3=ON
-      -D PYTHON3_EXECUTABLE=#{Formula["python@3.10"].opt_bin}/python3
       -D BUILD_TESTS=OFF
       -D BUILD_PERF_TESTS=OFF
       -D BUILD_EXAMPLES=OFF
@@ -81,7 +79,7 @@ class Opencv < Formula
 
     system "cmake", "-B", "build", *std_cmake_args, *args
     system "cmake", "--build", "build"
-    system "cmake", "--build", "build", "--target", "install"
+    system "cmake", "--install", "build"
 
     # Prevent dependents from using fragile Cellar paths.
     inreplace lib/"pkgconfig/opencv#{version.major}.pc", prefix, opt_prefix
