@@ -22,7 +22,6 @@ class Llvm < Formula
   depends_on "ninja" => :build
   depends_on "python@3.10"
   depends_on "six"
-  depends_on "z3"
   depends_on "zstd"
 
   uses_from_macos "libedit"
@@ -90,7 +89,6 @@ class Llvm < Formula
       -DLLVM_INCLUDE_DOCS=OFF
       -DLLVM_INCLUDE_TESTS=OFF
       -DLLVM_INSTALL_UTILS=ON
-      -DLLVM_ENABLE_Z3_SOLVER=ON
       -DLLVM_OPTIMIZED_TABLEGEN=ON
       -DLLVM_TARGETS_TO_BUILD=all
       -DLLDB_USE_SYSTEM_DEBUGSERVER=ON
@@ -544,17 +542,6 @@ class Llvm < Formula
     EOS
     assert_equal "int main() { printf(\"Hello world!\"); }\n",
       shell_output("#{bin}/clang-format -style=google clangformattest.c")
-
-    # Test static analyzer
-    (testpath/"unreachable.c").write <<~EOS
-      unsigned int func(unsigned int a) {
-        unsigned int *z = 0;
-        if ((a & 1) && ((a & 1) ^1))
-          return *z; // unreachable
-        return 0;
-      }
-    EOS
-    system bin/"clang", "--analyze", "-Xanalyzer", "-analyzer-constraints=z3", "unreachable.c"
 
     # This will fail if the clang bindings cannot find `libclang`.
     with_env(PYTHONPATH: prefix/Language::Python.site_packages(python3)) do
