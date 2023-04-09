@@ -1,8 +1,8 @@
 class Llvm < Formula
   desc "Next-gen compiler infrastructure"
   homepage "https://llvm.org/"
-  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.0/llvm-project-16.0.0.src.tar.xz"
-  sha256 "9a56d906a2c81f16f06efc493a646d497c53c2f4f28f0cb1f3c8da7f74350254"
+  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.1/llvm-project-16.0.1.src.tar.xz"
+  sha256 "ab7e3b95adb88fd5b669ca8c1d3c1e8d2a601c4478290d3ae31d8d70e96f2064"
   # The LLVM Project is under the Apache License v2.0 with LLVM Exceptions
   license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/llvm/llvm-project.git", branch: "main"
@@ -118,53 +118,16 @@ class Llvm < Formula
     runtimes_cmake_args = []
     builtins_cmake_args = []
 
-    if OS.mac?
-      args << "-DLLVM_BUILD_LLVM_C_DYLIB=ON"
-      args << "-DLLVM_ENABLE_LIBCXX=ON"
-      args << "-DLIBCXX_INSTALL_LIBRARY_DIR=#{lib}/c++"
-      args << "-DLIBCXXABI_INSTALL_LIBRARY_DIR=#{lib}/c++"
-      args << "-DDEFAULT_SYSROOT=#{macos_sdk}" if macos_sdk
-      runtimes_cmake_args << "-DCMAKE_INSTALL_RPATH=#{loader_path}"
+    args << "-DLLVM_BUILD_LLVM_C_DYLIB=ON"
+    args << "-DLLVM_ENABLE_LIBCXX=ON"
+    args << "-DLIBCXX_INSTALL_LIBRARY_DIR=#{lib}/c++"
+    args << "-DLIBCXXABI_INSTALL_LIBRARY_DIR=#{lib}/c++"
+    args << "-DDEFAULT_SYSROOT=#{macos_sdk}" if macos_sdk
+    runtimes_cmake_args << "-DCMAKE_INSTALL_RPATH=#{loader_path}"
 
-      # Disable builds for OSes not supported by the CLT SDK.
-      clt_sdk_support_flags = %w[I WATCH TV].map { |os| "-DCOMPILER_RT_ENABLE_#{os}OS=OFF" }
-      builtins_cmake_args += clt_sdk_support_flags
-    else
-      # Disable `libxml2` which isn't very useful.
-      args << "-DLLVM_ENABLE_LIBXML2=OFF"
-      args << "-DLLVM_ENABLE_LIBCXX=OFF"
-      args << "-DCLANG_DEFAULT_CXX_STDLIB=libstdc++"
-      # Enable llvm gold plugin for LTO
-      args << "-DLLVM_BINUTILS_INCDIR=#{Formula["binutils"].opt_include}"
-      # Parts of Polly fail to correctly build with PIC when being used for DSOs.
-      args << "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
-      runtimes_cmake_args += %w[
-        -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF
-        -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-
-        -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON
-        -DLIBCXX_STATICALLY_LINK_ABI_IN_SHARED_LIBRARY=OFF
-        -DLIBCXX_STATICALLY_LINK_ABI_IN_STATIC_LIBRARY=ON
-        -DLIBCXX_USE_COMPILER_RT=ON
-        -DLIBCXX_HAS_ATOMIC_LIB=OFF
-
-        -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON
-        -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=OFF
-        -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_STATIC_LIBRARY=ON
-        -DLIBCXXABI_USE_COMPILER_RT=ON
-        -DLIBCXXABI_USE_LLVM_UNWINDER=ON
-
-        -DLIBUNWIND_USE_COMPILER_RT=ON
-        -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON
-        -DCOMPILER_RT_USE_LLVM_UNWINDER=ON
-
-        -DSANITIZER_CXX_ABI=libc++
-        -DSANITIZER_TEST_CXX=libc++
-      ]
-
-      # Prevent compiler-rt from building i386 targets, as this is not portable.
-      builtins_cmake_args << "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
-    end
+    # Disable builds for OSes not supported by the CLT SDK.
+    clt_sdk_support_flags = %w[I WATCH TV].map { |os| "-DCOMPILER_RT_ENABLE_#{os}OS=OFF" }
+    builtins_cmake_args += clt_sdk_support_flags
 
     # Skip the PGO build on HEAD installs or non-bottle source builds
     # Catalina and earlier requires too many hacks to build with PGO.
