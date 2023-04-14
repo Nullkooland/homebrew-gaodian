@@ -298,10 +298,9 @@ class Llvm < Formula
       (xctoolchain/"usr").install_symlink [bin, include, lib, libexec, share]
     end
 
-    # Install LLVM & MLIR Python bindings
+    # Install LLVM Python bindings
     # Clang Python bindings are installed by CMake
     (lib/site_packages).install llvmpath/"bindings/python/llvm"
-    (lib/site_packages).install llvmpath/"bindings/python/mlir"
 
     # Create symlinks so that the Python bindings can be used with alternative Python versions
     (lib/"python3.10/site-packages").install_symlink (lib/site_packages).children
