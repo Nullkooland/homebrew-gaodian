@@ -59,9 +59,6 @@ class Llvm < Formula
       projects << "openmp"
     end
 
-    python_versions = Formula.names
-                             .select { |name| name.start_with? "python@" }
-                             .map { |py| py.delete_prefix("python@") }
     site_packages = Language::Python.site_packages(python3).delete_prefix("lib/")
 
     # Apple's libstdc++ is too old to build LLVM
@@ -91,6 +88,8 @@ class Llvm < Formula
       -DLLVM_INSTALL_UTILS=ON
       -DLLVM_OPTIMIZED_TABLEGEN=ON
       -DLLVM_TARGETS_TO_BUILD=;X86;AArch64;ARM;RISCV;WebAssembly
+      -DMLIR_ENABLE_BINDINGS_PYTHON=ON
+      -DPython3_EXECUTABLE=/usr/local/bin/python3
       -DLLDB_USE_SYSTEM_DEBUGSERVER=ON
       -DLLDB_ENABLE_PYTHON=ON
       -DLLDB_ENABLE_LUA=OFF
@@ -98,7 +97,7 @@ class Llvm < Formula
       -DLLDB_USE_SYSTEM_SIX=ON
       -DLLDB_PYTHON_RELATIVE_PATH=libexec/#{site_packages}
       -DLIBOMP_INSTALL_ALIASES=OFF
-      -DCLANG_PYTHON_BINDINGS_VERSIONS=#{python_versions.join(";")}
+      -DCLANG_PYTHON_BINDINGS_VERSIONS=3.10
       -DLLVM_CREATE_XCODE_TOOLCHAIN=OFF
       -DCLANG_FORCE_MATCHING_LIBCLANG_SOVERSION=OFF
       -DPACKAGE_VENDOR=#{tap.user}
@@ -299,16 +298,13 @@ class Llvm < Formula
       (xctoolchain/"usr").install_symlink [bin, include, lib, libexec, share]
     end
 
-    # Install LLVM Python bindings
+    # Install LLVM & MLIR Python bindings
     # Clang Python bindings are installed by CMake
     (lib/site_packages).install llvmpath/"bindings/python/llvm"
+    (lib/site_packages).install llvmpath/"bindings/python/mlir"
 
     # Create symlinks so that the Python bindings can be used with alternative Python versions
-    python_versions.each do |py_ver|
-      next if py_ver == Language::Python.major_minor_version(python3).to_s
-
-      (lib/"python#{py_ver}/site-packages").install_symlink (lib/site_packages).children
-    end
+    (lib/"python3.10/site-packages").install_symlink (lib/site_packages).children
 
     # Install Vim plugins
     %w[ftdetect ftplugin indent syntax].each do |dir|
