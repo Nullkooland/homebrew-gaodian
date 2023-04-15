@@ -300,11 +300,8 @@ class Llvm < Formula
 
     # Install LLVM Python bindings
     # Clang Python bindings are installed by CMake
-    (lib/site_packages).install llvmpath/"bindings/python/llvm"
-
-    # Create symlinks so that the Python bindings can be used with alternative Python versions
-    (lib/"python3.10/site-packages").install_symlink (lib/site_packages).children
-
+    # (lib/site_packages).install llvmpath/"bindings/python/llvm"
+  
     # Install Vim plugins
     %w[ftdetect ftplugin indent syntax].each do |dir|
       (share/"vim/vimfiles"/dir).install Pathname.glob("*/utils/vim/#{dir}/*.vim")
