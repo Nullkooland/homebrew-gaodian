@@ -15,6 +15,7 @@ class Opencv < Formula
   depends_on "ninja" => :build
   
   depends_on "goose-bomb/gaodian/ffmpeg"
+  depends_on "goose-bomb/gaodian/tbb"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "protobuf@3"
