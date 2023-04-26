@@ -14,7 +14,6 @@ class Ffmpeg < Formula
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
 
-  depends_on "dav1d@1.0.0"
   depends_on "goose-bomb/gaodian/svt-av1"
   depends_on "freetype"
   depends_on "goose-bomb/gaodian/libass"
@@ -35,7 +34,6 @@ class Ffmpeg < Formula
       --host-cflags=#{ENV.cflags}
       --host-ldflags=#{ENV.ldflags}
       --enable-libsvtav1
-      --enable-libdav1d
       --enable-libopus
       --enable-gpl
       --enable-libx265
